@@ -11,6 +11,7 @@ const UserInfo = ({ user, tweet }) => {
             href={`https://www.twitter.com/${user.username}`}
             target="_blank"
             rel="noreferrer"
+            title={`View ${user.name} on Twitter`}
           >
             <img
               src={user.profile_image_url}
@@ -27,6 +28,7 @@ const UserInfo = ({ user, tweet }) => {
               href={`https://www.twitter.com/${user.username}`}
               target="_blank"
               rel="noreferrer"
+              title={`View ${user.name} on Twitter`}
             >
               <span>{user.name}</span>
             </a>

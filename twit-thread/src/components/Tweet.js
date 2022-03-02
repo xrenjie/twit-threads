@@ -26,6 +26,7 @@ const Tweet = ({ tweets, tweet, user, users }) => {
             href={`https://www.twitter.com/${memoUser.username}/status/${thisTweet.id}`}
             target="_blank"
             rel="noreferrer"
+            title="View tweet on Twitter"
           >
             {new Date(thisTweet.created_at).toLocaleString() + " "}
           </a>
