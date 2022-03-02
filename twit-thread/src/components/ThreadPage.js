@@ -86,16 +86,23 @@ const ThreadPage = () => {
       setThread(conversation.data);
       //load usernames for each user id
       // await fetchNewUsers();
-      setLoading(false);
+      // setLoading(false);
     }
     fetchData();
   }, []);
 
   useEffect(() => {
-    if (Object.keys(users).length === 0 || newUserIds.size === 1) {
-      setTimeout(() => {
+    if (newUserIds.size === 1) {
+      async function fetch() {
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+
         fetchNewUsers();
-      }, 3000);
+
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        setLoading(false);
+      }
+
+      fetch();
     }
   }, [thread]);
 

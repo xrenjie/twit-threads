@@ -9,10 +9,9 @@ const Thread = ({ tweets, rootTweet, users }) => {
         tweet={rootTweet}
         user={users[rootTweet.author_id]}
         users={users}
-        prevColor={Number(0.0)}
       />
     </div>
   );
 };
 
-export default Thread;
+export default React.memo(Thread);

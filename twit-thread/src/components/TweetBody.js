@@ -8,4 +8,4 @@ const TweetBody = ({ tweet }) => {
   );
 };
 
-export default TweetBody;
+export default React.memo(TweetBody);

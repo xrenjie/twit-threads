@@ -1,37 +1,45 @@
-import React from "react";
+import React, { useMemo } from "react";
 import UserInfo from "./UserInfo";
 import TweetBody from "./TweetBody";
 
-const Tweet = ({ tweets, tweet, user, users, prevColor }) => {
+const Tweet = ({ tweets, tweet, user, users }) => {
+  const thisTweet = useMemo(() => {
+    return tweet;
+  }, [tweet]);
+
+  const memoTweets = useMemo(() => tweets, [tweets]);
+
+  const memoUser = useMemo(() => user, [user]);
+  const memoUsers = useMemo(() => users, [users]);
+
   return (
     <div
       className={`px-2 pt-2 mt-2 rounded ml-2 border-l-2 border-t-2 ${
-        tweet.root ? "border-l-[3] border-gray-400" : ""
+        thisTweet.root ? "border-l-[3] border-gray-400" : ""
       }`}
     >
-      <UserInfo user={user} tweet={tweet} />
-      <TweetBody tweet={tweet} />
+      <UserInfo user={memoUser} tweet={thisTweet} />
+      <TweetBody tweet={thisTweet} />
       <div className="text-xs">
-        {user ? (
+        {memoUser ? (
           <a
-            href={`https://www.twitter.com/${user.username}/status/${tweet.id}`}
+            href={`https://www.twitter.com/${memoUser.username}/status/${thisTweet.id}`}
             target="_blank"
             rel="noreferrer"
           >
-            {new Date(tweet.created_at).toLocaleString() + " "}
+            {new Date(thisTweet.created_at).toLocaleString() + " "}
           </a>
         ) : null}
       </div>
-      {tweets[tweet.id]
-        ? tweets[tweet.id].map((reply) => {
+      {memoTweets[thisTweet.id]
+        ? memoTweets[thisTweet.id].map((reply) => {
             return (
               <Tweet
-                tweets={tweets}
+                tweets={memoTweets}
                 tweet={reply}
-                user={users[reply.author_id]}
-                users={users}
+                user={memoUsers[reply.author_id]}
+                users={memoUsers}
                 key={reply.id}
-                prevColor={prevColor + 0.2}
               />
             );
           })
@@ -40,4 +48,4 @@ const Tweet = ({ tweets, tweet, user, users, prevColor }) => {
   );
 };
 
-export default Tweet;
+export default React.memo(Tweet);

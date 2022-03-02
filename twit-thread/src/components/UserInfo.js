@@ -45,4 +45,4 @@ const UserInfo = ({ user, tweet }) => {
   );
 };
 
-export default UserInfo;
+export default React.memo(UserInfo);
