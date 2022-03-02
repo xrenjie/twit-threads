@@ -14,7 +14,7 @@ const getTweet = async (req, res) => {
   );
   if (result.body && result.body.data) {
     return result.body.data;
-  }
+  } else return {};
 };
 
 //continually get conversation using next_token param
@@ -29,6 +29,7 @@ const getConversation = async (req, res) => {
     config
   );
 
+  if (root.statusCode !== 200) return {};
   const conversation_id = root.body.data.conversation_id;
 
   let result = await needle(
@@ -42,7 +43,7 @@ const getConversation = async (req, res) => {
     config
   );
 
-  if (result.body.status === 429) {
+  if (result.statusCode !== 200) {
     return {};
   }
   let num_results = result.body.meta.result_count;
@@ -58,7 +59,7 @@ const getConversation = async (req, res) => {
   if (next_token) {
     while (num_results >= 10 && next_token) {
       result = await needle("get", `${convUrl}`, query, config);
-      conversation.push(...result.body.data);
+      if (result.statusCode !== 200) conversation.push(...result.body.data);
       num_results = result.body.meta.result_count;
       next_token = result.body.meta.next_token;
       query.next_token = next_token;
