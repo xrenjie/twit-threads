@@ -1,0 +1,21 @@
+{
+  "name": "twit-thread backend",
+  "version": "1.0.0",
+  "description": "backend server for twit-thread site",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "helmet": "^5.0.2",
+    "morgan": "^1.10.0",
+    "needle": "^3.0.0"
+  }
+}
