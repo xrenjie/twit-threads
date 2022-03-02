@@ -3,7 +3,7 @@ import Tweet from "./Tweet";
 
 const Thread = ({ tweets, rootTweet, users }) => {
   return (
-    <div className="flex flex-col lg:mx-[20vw] mx-[4vw] mt-10 mb-10">
+    <div className="flex flex-col">
       <Tweet
         tweets={tweets}
         tweet={rootTweet}
@@ -14,4 +14,4 @@ const Thread = ({ tweets, rootTweet, users }) => {
   );
 };
 
-export default React.memo(Thread);
+export default Thread;

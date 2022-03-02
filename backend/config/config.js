@@ -8,7 +8,7 @@ const config = {
   },
 };
 const apiQuery = {
-  "tweet.fields": `conversation_id,created_at,author_id,referenced_tweets`,
+  "tweet.fields": `conversation_id,created_at,author_id,referenced_tweets,public_metrics`,
 };
 
 exports.apiUrl = apiUrl;

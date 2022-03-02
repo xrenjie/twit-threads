@@ -1,42 +1,39 @@
 import React, { useMemo } from "react";
 import UserInfo from "./UserInfo";
 import TweetBody from "./TweetBody";
+import TweetMetrics from "./TweetMetrics";
 
 const Tweet = ({ tweets, tweet, user, users }) => {
-  const thisTweet = useMemo(() => {
-    return tweet;
-  }, [tweet]);
-
-  const memoTweets = useMemo(() => tweets, [tweets]);
-
   const memoUser = useMemo(() => user, [user]);
   const memoUsers = useMemo(() => users, [users]);
 
   return (
     <div
       className={`px-2 pt-2 mt-2 rounded ml-2 border-l-2 border-t-2 ${
-        thisTweet.root ? "border-l-[3] border-gray-400" : ""
+        tweet.root ? "border-l-[3] border-gray-400" : ""
       }`}
     >
-      <UserInfo user={memoUser} tweet={thisTweet} />
-      <TweetBody tweet={thisTweet} />
-      <div className="text-xs">
+      <UserInfo user={memoUser} tweet={tweet} />
+      <TweetBody tweet={tweet} />
+      <div className="text-xs w-fit">
         {memoUser ? (
           <a
-            href={`https://www.twitter.com/${memoUser.username}/status/${thisTweet.id}`}
+            href={`https://www.twitter.com/${memoUser.username}/status/${tweet.id}`}
             target="_blank"
             rel="noreferrer"
             title="View tweet on Twitter"
           >
-            {new Date(thisTweet.created_at).toLocaleString() + " "}
+            {new Date(tweet.created_at).toLocaleString() + " "}
+            <TweetMetrics metrics={tweet.public_metrics} />
           </a>
         ) : null}
       </div>
-      {memoTweets[thisTweet.id]
-        ? memoTweets[thisTweet.id].map((reply) => {
+
+      {tweets[tweet.id]
+        ? tweets[tweet.id].map((reply) => {
             return (
               <Tweet
-                tweets={memoTweets}
+                tweets={tweets}
                 tweet={reply}
                 user={memoUsers[reply.author_id]}
                 users={memoUsers}
@@ -49,4 +46,4 @@ const Tweet = ({ tweets, tweet, user, users }) => {
   );
 };
 
-export default React.memo(Tweet);
+export default Tweet;

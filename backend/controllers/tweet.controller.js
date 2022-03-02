@@ -12,6 +12,7 @@ const getTweet = async (req, res) => {
     apiQuery,
     config
   );
+
   if (result.body && result.body.data) {
     return result.body.data;
   } else return {};
@@ -38,7 +39,7 @@ const getConversation = async (req, res) => {
       {
         query: `conversation_id:${conversation_id}`,
         "tweet.fields":
-          "created_at,in_reply_to_user_id,author_id,referenced_tweets",
+          "created_at,in_reply_to_user_id,author_id,referenced_tweets,public_metrics",
       },
       config
     );
@@ -74,25 +75,6 @@ const getConversation = async (req, res) => {
     console.log(err);
     return {};
   }
-  // if (result.body && result.body.data) {
-  //   const conversation_id = result.body.data.conversation_id;
-
-  //   const conversation = await needle(
-  //     "get",
-  //     "https://api.twitter.com/2/tweets/search/recent",
-  //     {
-  //       query: `conversation_id:${conversation_id}`,
-  //       "tweet.fields":
-  //         "created_at,in_reply_to_user_id,author_id,referenced_tweets",
-  //     },
-  //     config
-  //   );
-  //   if (conversation.body) {
-  //     return conversation.body;
-  //   }
-  // } else {
-  //   return { error: "Unable to fetch tweets" };
-  // }
 };
 
 function reconstructThread(root, conversation) {

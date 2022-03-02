@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { apiUrl } from "../config/api";
 import axios from "axios";
-import { TweetObject } from "../types/TweetObject";
 import Thread from "./Thread";
 import Loading from "./Loading";
+import SortMenu from "./SortMenu";
+import ReactGA from "react-ga";
 
 const ThreadPage = () => {
   const [loading, setLoading] = useState(true);
@@ -11,6 +12,8 @@ const ThreadPage = () => {
   const [users, setUsers] = useState({});
   const [newUserIds, setNewUserIds] = useState(new Set());
   const [thread, setThread] = useState({});
+  const [firstLoad, setFirstLoad] = useState(true);
+  const [forceRender, setForceRender] = useState(false);
 
   //gets user info for each user id in newUserIds
   const fetchNewUsers = async () => {
@@ -48,26 +51,16 @@ const ThreadPage = () => {
   //on initial render, fetch root tweet info and
   //all replies as a "tree" (dictionary where keys are tweet ids and values are lists of replies)
   useEffect(() => {
+    ReactGA.pageview(window.location.pathname);
+
     setRootTweet("");
     async function fetchData() {
       //get root tweet
       const tweetId = window.location.pathname.split("/")[2];
-      const params = {
-        query: `conversation_id:${tweetId}`,
-        "tweet.fields": `conversation_id,created_at,entities,id,source,text,author_id`,
-      };
-      const rootTweet = await axios.get(`${apiUrl}/tweets/${tweetId}`, params);
 
-      let tweet = new TweetObject(
-        rootTweet.data.id,
-        rootTweet.data.conversation_id,
-        rootTweet.data.text,
-        rootTweet.data.created_at,
-        rootTweet.data.author_id,
-        true //main tweet
-      );
+      const rootTweet = await axios.get(`${apiUrl}/tweets/${tweetId}`);
 
-      setRootTweet(tweet);
+      setRootTweet(rootTweet.data);
 
       //add root tweet user id to set of user ids
       setNewUserIds((prev) => prev.add(rootTweet.data.author_id));
@@ -77,16 +70,25 @@ const ThreadPage = () => {
         `${apiUrl}/tweets/replies/${rootTweet.data.id}`
       );
 
+      //sort replies by interaction count
       Object.keys(conversation.data).forEach((tweetId) => {
-        conversation.data[tweetId].sort(
-          (a, b) => new Date(a.created_at) - new Date(b.created_at)
-        );
+        conversation.data[tweetId].sort((a, b) => {
+          let aVal =
+            a.public_metrics.reply_count +
+            a.public_metrics.retweet_count +
+            a.public_metrics.quote_count +
+            a.public_metrics.like_count;
+          let bVal =
+            b.public_metrics.reply_count +
+            b.public_metrics.retweet_count +
+            b.public_metrics.quote_count +
+            b.public_metrics.like_count;
+          return bVal - aVal;
+        });
       });
 
       setThread(conversation.data);
-      //load usernames for each user id
-      // await fetchNewUsers();
-      // setLoading(false);
+      setFirstLoad(false);
     }
     fetchData();
   }, []);
@@ -95,23 +97,101 @@ const ThreadPage = () => {
     if (newUserIds.size === 1) {
       async function fetch() {
         await new Promise((resolve) => setTimeout(resolve, 1500));
-
         fetchNewUsers();
-
         await new Promise((resolve) => setTimeout(resolve, 1500));
         setLoading(false);
       }
-
       fetch();
     }
-  }, [thread]);
+  }, [firstLoad]);
+
+  function sortReplies(sortBy) {
+    let toSort = thread;
+    switch (sortBy) {
+      case "total":
+        Object.keys(toSort).forEach((tweetId) => {
+          toSort[tweetId].sort((a, b) => {
+            let aVal =
+              a.public_metrics.reply_count +
+              a.public_metrics.retweet_count +
+              a.public_metrics.quote_count +
+              a.public_metrics.like_count;
+            let bVal =
+              b.public_metrics.reply_count +
+              b.public_metrics.retweet_count +
+              b.public_metrics.quote_count +
+              b.public_metrics.like_count;
+            return bVal - aVal;
+          });
+        });
+        break;
+      case "replies":
+        Object.keys(toSort).forEach((tweetId) => {
+          toSort[tweetId].sort((a, b) => {
+            let aVal = a.public_metrics.reply_count;
+            let bVal = b.public_metrics.reply_count;
+            return bVal - aVal;
+          });
+        });
+        break;
+      case "likes":
+        Object.keys(toSort).forEach((tweetId) => {
+          toSort[tweetId].sort((a, b) => {
+            let aVal = a.public_metrics.like_count;
+            let bVal = b.public_metrics.like_count;
+            return bVal - aVal;
+          });
+        });
+        break;
+      case "latest":
+        Object.keys(toSort).forEach((tweetId) => {
+          toSort[tweetId].sort((a, b) => {
+            let aVal = new Date(a.created_at);
+            let bVal = new Date(b.created_at);
+            return bVal - aVal;
+          });
+        });
+        break;
+      case "earliest":
+        Object.keys(toSort).forEach((tweetId) => {
+          toSort[tweetId].sort((a, b) => {
+            let aVal = new Date(a.created_at);
+            let bVal = new Date(b.created_at);
+            return aVal - bVal;
+          });
+        });
+        break;
+      default:
+        Object.keys(toSort).forEach((tweetId) => {
+          toSort[tweetId].sort((a, b) => {
+            let aVal =
+              a.public_metrics.reply_count +
+              a.public_metrics.retweet_count +
+              a.public_metrics.quote_count +
+              a.public_metrics.like_count;
+            let bVal =
+              b.public_metrics.reply_count +
+              b.public_metrics.retweet_count +
+              b.public_metrics.quote_count +
+              b.public_metrics.like_count;
+            return bVal - aVal;
+          });
+        });
+    }
+    setThread(toSort);
+
+    setForceRender((prev) => !prev);
+  }
 
   return (
     <div>
       {loading ? (
         <Loading />
       ) : (
-        <Thread tweets={thread} rootTweet={rootTweet} users={users} />
+        <div className="flex flex-col lg:mx-[20vw] mx-[4vw] mt-10 mb-10">
+          <SortMenu sortReplies={sortReplies} />
+          <Thread tweets={thread} rootTweet={rootTweet} users={users} />
+        </div>
       )}
     </div>
   );
