@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { apiUrl, config } from "../config/api";
+import { apiUrl } from "../config/api";
 import axios from "axios";
 import { TweetObject } from "../types/TweetObject";
 import Thread from "./Thread";
 import Loading from "./Loading";
-
-//load main tweet and replies
-//save next pointer for pagination
-//save userids in set
-//fetch usernames from set
-
-//on load more, fetch next page of tweets and add user
-//to newUserIds if user not in users.current
 
 const ThreadPage = () => {
   const [loading, setLoading] = useState(true);
@@ -64,11 +56,7 @@ const ThreadPage = () => {
         query: `conversation_id:${tweetId}`,
         "tweet.fields": `conversation_id,created_at,entities,id,source,text,author_id`,
       };
-      const rootTweet = await axios.get(
-        `${apiUrl}/tweets/${tweetId}`,
-        params,
-        config
-      );
+      const rootTweet = await axios.get(`${apiUrl}/tweets/${tweetId}`, params);
 
       let tweet = new TweetObject(
         rootTweet.data.id,
