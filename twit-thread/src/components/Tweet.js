@@ -12,7 +12,7 @@ const Tweet = ({ tweets, tweet, user, users, prevColor }) => {
       <UserInfo user={user} tweet={tweet} />
       <TweetBody tweet={tweet} />
       <div className="text-xs">
-        {new Date(tweet.created_at).toLocaleString()}
+        {new Date(tweet.created_at).toLocaleString() + " "}
       </div>
       {tweets[tweet.id]
         ? tweets[tweet.id].map((reply) => {

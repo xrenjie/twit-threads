@@ -3,9 +3,9 @@ import { ReactComponent as Circle } from "../assets/circle.svg";
 
 const Loading = () => {
   return (
-    <div className="">
-      <Circle className="w-10 h-10 absolute top-1/2 left-1/2 fill-gray-500" />
-      <Circle className="w-10 h-10 absolute top-1/2 left-1/2 animate-ping" />
+    <div className="absolute top-1/2 left-1/2">
+      <Circle className="w-10 h-10 absolute  fill-gray-500" />
+      <Circle className="w-10 h-10 absolute  animate-ping" />
     </div>
   );
 };

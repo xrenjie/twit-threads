@@ -22,54 +22,58 @@ const getTweet = async (req, res) => {
 //then organize tweets using referenced_tweets.type = "replied_to"
 //create thread then save to db
 const getConversation = async (req, res) => {
-  const root = await needle(
-    "get",
-    `${apiUrl}${req.params.id}`,
-    apiQuery,
-    config
-  );
+  try {
+    const root = await needle(
+      "get",
+      `${apiUrl}${req.params.id}`,
+      apiQuery,
+      config
+    );
 
-  if (root.statusCode !== 200) return {};
-  const conversation_id = root.body.data.conversation_id;
+    const conversation_id = root.body.data.conversation_id;
 
-  let result = await needle(
-    "get",
-    "https://api.twitter.com/2/tweets/search/recent",
-    {
+    let result = await needle(
+      "get",
+      "https://api.twitter.com/2/tweets/search/recent",
+      {
+        query: `conversation_id:${conversation_id}`,
+        "tweet.fields":
+          "created_at,in_reply_to_user_id,author_id,referenced_tweets",
+      },
+      config
+    );
+
+    if (result.body.status === 429) {
+      return {};
+    }
+    let num_results = result.body.meta.result_count;
+    const conversation = [...result.body.data];
+    let next_token = result.body.meta.next_token;
+    const query = {
+      ...apiQuery,
       query: `conversation_id:${conversation_id}`,
-      "tweet.fields":
-        "created_at,in_reply_to_user_id,author_id,referenced_tweets",
-    },
-    config
-  );
+      next_token: next_token,
+    };
+    await setTimeout(() => {}, 3000);
 
-  if (result.statusCode !== 200) {
+    if (next_token) {
+      while (num_results >= 10 && next_token) {
+        result = await needle("get", `${convUrl}`, query, config);
+        conversation.push(...result.body.data);
+        num_results = result.body.meta.result_count;
+        next_token = result.body.meta.next_token;
+        query.next_token = next_token;
+        await setTimeout(() => {}, 3000);
+      }
+    }
+
+    const tree = await reconstructThread(root.body.data, conversation);
+
+    return tree;
+  } catch (err) {
+    console.log(err);
     return {};
   }
-  let num_results = result.body.meta.result_count;
-  const conversation = [...result.body.data];
-  let next_token = result.body.meta.next_token;
-  const query = {
-    ...apiQuery,
-    query: `conversation_id:${conversation_id}`,
-    next_token: next_token,
-  };
-  await setTimeout(() => {}, 3000);
-
-  if (next_token) {
-    while (num_results >= 10 && next_token) {
-      result = await needle("get", `${convUrl}`, query, config);
-      if (result.statusCode !== 200) conversation.push(...result.body.data);
-      num_results = result.body.meta.result_count;
-      next_token = result.body.meta.next_token;
-      query.next_token = next_token;
-      await setTimeout(() => {}, 3000);
-    }
-  }
-
-  const tree = await reconstructThread(root.body.data, conversation);
-
-  return tree;
   // if (result.body && result.body.data) {
   //   const conversation_id = result.body.data.conversation_id;
 
