@@ -3,7 +3,6 @@ import React from "react";
 import { ReactComponent as VerifiedBadge } from "../assets/twitter-verified-badge.svg";
 
 const UserInfo = ({ user, tweet }) => {
-  console.log(user);
   return (
     <div className="flex flex-row">
       {user ? (
