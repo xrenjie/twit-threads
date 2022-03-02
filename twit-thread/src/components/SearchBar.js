@@ -8,7 +8,8 @@ const SearchBar = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     let segments = tweetUrl.split("/");
-    navigate(`/thread/${segments[segments.length - 1]}`);
+    let idx = segments.indexOf("status");
+    navigate(`/thread/${segments[idx + 1]}`);
   };
 
   return (
