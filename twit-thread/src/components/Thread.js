@@ -9,6 +9,7 @@ const Thread = ({ tweets, rootTweet, users }) => {
         tweet={rootTweet}
         user={users[rootTweet.author_id]}
         users={users}
+        rootTweet={rootTweet}
       />
     </div>
   );

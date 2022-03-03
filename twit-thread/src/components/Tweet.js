@@ -3,18 +3,19 @@ import UserInfo from "./UserInfo";
 import TweetBody from "./TweetBody";
 import TweetMetrics from "./TweetMetrics";
 
-const Tweet = ({ tweets, tweet, user, users }) => {
+const Tweet = ({ tweets, tweet, user, users, rootTweet }) => {
   const memoUser = useMemo(() => user, [user]);
   const memoUsers = useMemo(() => users, [users]);
 
   return (
     <div
-      className={`px-2 pt-2 mt-2 rounded ml-2 border-l-2 border-t-2 ${
-        tweet.root ? "border-l-[3] border-gray-400" : ""
+      className={`px-2 pt-2 mt-2 rounded ml-2 border-l-2 border-t-2 w-full ${
+        tweet.id === rootTweet.id ? "border-2" : ""
       }`}
     >
       <UserInfo user={memoUser} tweet={tweet} />
       <TweetBody tweet={tweet} />
+
       <div className="text-xs w-fit">
         {memoUser ? (
           <a
@@ -38,6 +39,7 @@ const Tweet = ({ tweets, tweet, user, users }) => {
                 user={memoUsers[reply.author_id]}
                 users={memoUsers}
                 key={reply.id}
+                rootTweet={rootTweet}
               />
             );
           })
