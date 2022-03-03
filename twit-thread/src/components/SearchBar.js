@@ -23,9 +23,9 @@ const SearchBar = () => {
         onChange={(e) => {
           setTweetUrl(e.target.value);
         }}
-        className="w-full p-2 border-2 border-gray-400 rounded bg-gray-100"
+        className="w-full p-2 border-2 border-gray-400 rounded bg-gray-100 dark:outline-none dark:border-none dark:bg-slate-700 dark:cursor-white dark:placeholder-slate-100 dark:caret-slate-100 dark:text-slate-100"
       />
-      <button className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 px-6">
+      <button className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 px-6 dark:border">
         Go
       </button>
     </form>

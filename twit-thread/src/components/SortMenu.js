@@ -2,14 +2,14 @@ import React from "react";
 
 const SortMenu = ({ sortReplies }) => {
   return (
-    <div className="ml-2">
+    <div className="ml-2 dark:text-gray-100">
       Sort by
       <select
         defaultValue={"Total"}
         onChange={(e) => {
           sortReplies(e.target.value);
         }}
-        className="ml-2 outline-none active:outline-none"
+        className="ml-2 outline-none active:outline-none dark:bg-slate-900"
       >
         <option value="total">Likes and Replies</option>
         <option value="replies">Replies</option>

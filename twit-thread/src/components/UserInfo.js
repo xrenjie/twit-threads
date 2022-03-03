@@ -37,7 +37,7 @@ const UserInfo = ({ user, tweet }) => {
           )}
           {user ? (
             user.verified ? (
-              <VerifiedBadge className="w-5 l-5" />
+              <VerifiedBadge className="w-5 l-5 fill-[#1da1f2] dark:fill-gray-100" />
             ) : null
           ) : null}
         </span>

@@ -5,6 +5,7 @@ import Thread from "./Thread";
 import Loading from "./Loading";
 import SortMenu from "./SortMenu";
 import ReactGA from "react-ga";
+import NotFound from "./NotFound";
 
 const ThreadPage = () => {
   const [loading, setLoading] = useState(true);
@@ -182,13 +183,22 @@ const ThreadPage = () => {
   }
 
   return (
-    <div>
+    <div className="h-full w-full">
       {loading ? (
         <Loading />
-      ) : (
-        <div className="flex flex-col lg:mx-[20vw] mx-[4vw] mt-10 mb-10">
+      ) : Object.keys(thread).length > 0 ? (
+        <div className="flex flex-col lg:mx-[24vw] mx-[4vw] pt-10 pb-10">
           <SortMenu sortReplies={sortReplies} />
           <Thread tweets={thread} rootTweet={rootTweet} users={users} />
+        </div>
+      ) : (
+        <div className="font-bold dark:text-slate-100 text-center">
+          <h1 className="text-center text-3xl ">Tweet not found</h1>
+          <h2 className="mt-20 text-2xl">
+            <a href="/" className="bg-slate-200 text-black p-2 rounded">
+              Go Home
+            </a>
+          </h2>
         </div>
       )}
     </div>

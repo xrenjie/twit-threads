@@ -26,7 +26,7 @@ const ScrollUpButton = () => {
     <button className="fixed bottom-10 right-10">
       <ArrowUp
         onClick={scrollToTop}
-        className={`${visible ? "" : "hidden"} w-16 h-16`}
+        className={`${visible ? "" : "hidden"} w-16 h-16 dark:fill-gray-100`}
       />
     </button>
   );
