@@ -10,6 +10,7 @@ const Thread = ({ tweets, rootTweet, users }) => {
         user={users[rootTweet.author_id]}
         users={users}
         rootTweet={rootTweet}
+        bgBool={true}
       />
     </div>
   );
