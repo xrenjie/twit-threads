@@ -17,18 +17,16 @@ const ScrollUpButton = () => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
-      /* you can also use 'auto' behaviour
-         in place of 'smooth' */
     });
   };
 
   window.addEventListener("scroll", toggleVisible);
 
   return (
-    <button className="fixed bottom-10 right-10 ">
+    <button className="fixed bottom-10 right-10">
       <ArrowUp
         onClick={scrollToTop}
-        className={`${visible ? "" : "hidden"} w-16 h-16  `}
+        className={`${visible ? "" : "hidden"} w-16 h-16`}
       />
     </button>
   );

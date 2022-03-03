@@ -57,9 +57,7 @@ const ThreadPage = () => {
     async function fetchData() {
       //get root tweet
       const tweetId = window.location.pathname.split("/")[2];
-
       const rootTweet = await axios.get(`${apiUrl}/tweets/${tweetId}`);
-
       setRootTweet(rootTweet.data);
 
       //add root tweet user id to set of user ids
@@ -105,6 +103,7 @@ const ThreadPage = () => {
     }
   }, [firstLoad]);
 
+  //sort replies by some option
   function sortReplies(sortBy) {
     let toSort = thread;
     switch (sortBy) {
@@ -179,7 +178,6 @@ const ThreadPage = () => {
         });
     }
     setThread(toSort);
-
     setForceRender((prev) => !prev);
   }
 

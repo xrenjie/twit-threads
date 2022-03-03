@@ -5,6 +5,7 @@ const { config, apiQuery } = require("../config/config");
 const apiUrl = "https://api.twitter.com/2/tweets/";
 const convUrl = "https://api.twitter.com/2/tweets/search/recent";
 
+//get root tweet
 const getTweet = async (req, res) => {
   const result = await needle(
     "get",
@@ -21,7 +22,7 @@ const getTweet = async (req, res) => {
 //continually get conversation using next_token param
 //until meta.result_count < 10
 //then organize tweets using referenced_tweets.type = "replied_to"
-//create thread then save to db
+//create thread then save to db (TODO)
 const getConversation = async (req, res) => {
   try {
     const root = await needle(
@@ -77,9 +78,11 @@ const getConversation = async (req, res) => {
   }
 };
 
+//reconstruct thread from root tweet and all other tweets
+//result is JSON object with all IDs as keys and
+//array of replies as values
 function reconstructThread(root, conversation) {
   const rootId = root.id;
-  const rootAuthorId = root.author_id;
   const tree = { [rootId]: [] };
   conversation.forEach((tweet) => {
     if (tweet.referenced_tweets) {
