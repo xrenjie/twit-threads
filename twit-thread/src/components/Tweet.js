@@ -9,7 +9,7 @@ const Tweet = ({ tweets, tweet, user, users, rootTweet }) => {
 
   return (
     <div
-      className={`px-2 pt-2 rounded ml-1 mb-2 pb-2 border-l-2 border-t-2 w-full bg-gray-500 bg-opacity-5 border-opacity-5 border-gray-500 dark:text-gray-100 ${
+      className={`px-2 pt-2 rounded ml-1  border-l-2 border-t-2 w-full bg-gray-500 bg-opacity-5 border-opacity-5 border-gray-500 dark:text-gray-100 ${
         tweet.id === rootTweet.id ? "border-2 dark:text-gray-100" : ""
       }`}
     >

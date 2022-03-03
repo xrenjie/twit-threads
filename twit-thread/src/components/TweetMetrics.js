@@ -5,7 +5,7 @@ const TweetMetrics = ({ metrics }) => {
   return (
     <div className="flex flex-row gap-4 items-center content-center mt-1 pb-2">
       <span className="flex flex-row gap-2">
-        <LikeIcon className="w-4 h-4 relative" />
+        <LikeIcon className="w-4 h-4 relative dark:fill-slate-100" />
         {metrics.like_count}
       </span>
       <span>

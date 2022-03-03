@@ -1,7 +1,7 @@
 import React from "react";
 
 const TweetBody = ({ tweet }) => {
-  return <span className="break-words">{tweet.text}</span>;
+  return <div className="break-words py-1">{tweet.text}</div>;
 };
 
 export default React.memo(TweetBody);
