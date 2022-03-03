@@ -1,5 +1,5 @@
 const needle = require("needle");
-
+const Thread = require("../models/Thread.model");
 const { config, apiQuery } = require("../config/config");
 
 const apiUrl = "https://api.twitter.com/2/tweets/";
@@ -22,7 +22,8 @@ const getTweet = async (req, res) => {
 //continually get conversation using next_token param
 //until meta.result_count < 10
 //then organize tweets using referenced_tweets.type = "replied_to"
-//create thread then save to db (TODO)
+//first check if thread saved in db
+//else save thread to db and return
 const getConversation = async (req, res) => {
   try {
     const root = await needle(
@@ -33,6 +34,14 @@ const getConversation = async (req, res) => {
     );
 
     const conversation_id = root.body.data.conversation_id;
+
+    //first try to get conversation from db
+    //must be at most 30 minutes old
+    const thread = await Thread.findOne({ conversation_id: req.params.id });
+    if (thread && new Date(thread.last_updated) - new Date() < 1000 * 60 * 15) {
+      console.log("found thread in db");
+      return reconstructThread(root.body.data, thread.conversation);
+    }
 
     let result = await needle(
       "get",
@@ -68,6 +77,14 @@ const getConversation = async (req, res) => {
         await setTimeout(() => {}, 3000);
       }
     }
+
+    const newThread = new Thread({
+      conversation_id: conversation_id,
+      conversation: conversation,
+      last_updated: new Date(),
+    });
+
+    newThread.save();
 
     const tree = await reconstructThread(root.body.data, conversation);
 

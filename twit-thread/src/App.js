@@ -22,7 +22,7 @@ function App() {
 
   return (
     <div className={`${darkMode ? "dark" : ""} h-full w-full`}>
-      <div className="absolute w-full justify-between flex flex-row gap-10 pl-[20vw] pr-[20vw] bg-black text-white text-2xl py-2">
+      <div className="absolute z-50 w-full justify-between flex flex-row gap-10 pl-[20vw] pr-[20vw] bg-black text-white text-2xl py-2">
         <a href="/" className="">
           TwitThreads
         </a>
