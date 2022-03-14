@@ -10,7 +10,6 @@ const RecentThreads = ({ numTweetsToShow }) => {
     async function fetch() {
       const tweets = await axios.get(`${apiUrl}/tweets/latest`);
       setTweets(tweets.data);
-      console.log(tweets);
     }
     fetch();
   }, []);

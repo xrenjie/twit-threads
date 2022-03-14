@@ -121,7 +121,6 @@ function reconstructThread(root, conversation) {
 }
 
 async function getLatestTweets() {
-  console.log("asd");
   const results = await Thread.find({}).sort({ last_updated: -1 }).limit(10);
   let res = results.map((tweet) => {
     if (tweet.root_tweet)
@@ -133,7 +132,6 @@ async function getLatestTweets() {
     else return null;
   });
   res = res.filter((tweet) => tweet);
-  console.log(res);
   return res;
 }
 
