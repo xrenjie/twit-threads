@@ -26,7 +26,7 @@ function App() {
     >
       <div className="absolute z-50 w-full justify-between flex flex-row gap-10 pl-[20vw] pr-[20vw] bg-black text-white text-2xl py-2 right-5">
         <a href="/" className="">
-          TwitThreads
+          TwitReader
         </a>
         <button>
           <MoonIcon
