@@ -12,6 +12,12 @@ const threadSchema = new Schema({
     type: [Object],
     required: true,
   },
+  root_tweet: {
+    type: Object,
+  },
+  root_user: {
+    type: Object,
+  },
   last_updated: {
     type: Date,
     required: true,

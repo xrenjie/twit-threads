@@ -15,7 +15,7 @@ const SearchBar = () => {
   return (
     <form
       onSubmit={handleSearch}
-      className="mt-20 flex md:w-[40vw] w-10/12 gap-6 md:flex-row flex-col "
+      className="mt-20 flex md:w-[40vw] w-10/12 gap-6 md:flex-row flex-col"
     >
       <input
         type="text"

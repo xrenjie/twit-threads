@@ -15,7 +15,7 @@ const getUsers = async (req, res, ids) => {
 };
 
 //get one user (currently unused)
-const getUser = async (req, res, id) => {
+const getUser = async (id) => {
   const params = {
     "user.fields": "verified,profile_image_url",
   };

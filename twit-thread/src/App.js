@@ -1,10 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./App.css";
-import Home from "./components/Home";
-import DataPage from "./components/DataPage";
-import NotFound from "./components/NotFound";
-import ScrollUpButton from "./components/ScrollUpButton";
+import Home from "./components/HomePage/Home";
+import DataPage from "./components/ThreadPage/DataPage";
+import NotFound from "./components/Common/NotFound";
+import ScrollUpButton from "./components/Common/ScrollUpButton";
 import ReactGA from "react-ga";
 import { ReactComponent as MoonIcon } from "./assets/moon.svg";
 
@@ -21,7 +21,9 @@ function App() {
   }, []);
 
   return (
-    <div className={`${darkMode ? "dark" : ""} h-full w-full`}>
+    <div
+      className={`${darkMode ? "dark" : ""} h-full w-full dark:bg-slate-900`}
+    >
       <div className="absolute z-50 w-full justify-between flex flex-row gap-10 pl-[20vw] pr-[20vw] bg-black text-white text-2xl py-2">
         <a href="/" className="">
           TwitThreads

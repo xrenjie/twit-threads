@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React from "react";
-import { ReactComponent as VerifiedBadge } from "../assets/twitter-verified-badge.svg";
+import { ReactComponent as VerifiedBadge } from "../../assets/twitter-verified-badge.svg";
 
 const UserInfo = ({ user, tweet }) => {
   return (

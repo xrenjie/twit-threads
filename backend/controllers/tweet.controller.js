@@ -1,6 +1,7 @@
 const needle = require("needle");
 const Thread = require("../models/Thread.model");
 const { config, apiQuery } = require("../config/config");
+const { getUser } = require("./user.controller.js");
 
 const apiUrl = "https://api.twitter.com/2/tweets/";
 const convUrl = "https://api.twitter.com/2/tweets/search/recent";
@@ -78,10 +79,14 @@ const getConversation = async (req, res) => {
       }
     }
 
+    const root_user = await getUser(root.body.data.author_id);
+
     const newThread = new Thread({
       conversation_id: conversation_id,
       conversation: conversation,
       last_updated: new Date(),
+      root_tweet: root.body.data,
+      root_user: root_user.data,
     });
 
     newThread.save();
@@ -115,5 +120,23 @@ function reconstructThread(root, conversation) {
   return tree;
 }
 
+async function getLatestTweets() {
+  console.log("asd");
+  const results = await Thread.find({}).sort({ last_updated: -1 }).limit(10);
+  let res = results.map((tweet) => {
+    if (tweet.root_tweet)
+      return {
+        root_tweet: tweet.root_tweet,
+        root_user: tweet.root_user,
+        conversation_id: tweet.conversation_id,
+      };
+    else return null;
+  });
+  res = res.filter((tweet) => tweet);
+  console.log(res);
+  return res;
+}
+
 exports.getTweet = getTweet;
 exports.getConversation = getConversation;
+exports.getLatestTweets = getLatestTweets;

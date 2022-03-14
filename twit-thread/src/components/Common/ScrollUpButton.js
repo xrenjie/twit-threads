@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ReactComponent as ArrowUp } from "../assets/arrow-circle-up.svg";
+import { ReactComponent as ArrowUp } from "../../assets/arrow-circle-up.svg";
 
 const ScrollUpButton = () => {
   const [visible, setVisible] = useState(false);

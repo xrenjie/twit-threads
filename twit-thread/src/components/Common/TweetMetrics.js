@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as LikeIcon } from "../assets/heart.svg";
+import { ReactComponent as LikeIcon } from "../../assets/heart.svg";
 
 const TweetMetrics = ({ metrics }) => {
   return (

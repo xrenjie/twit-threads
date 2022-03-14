@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
-import UserInfo from "./UserInfo";
-import TweetBody from "./TweetBody";
-import TweetMetrics from "./TweetMetrics";
+import UserInfo from "../Common/UserInfo";
+import TweetBody from "../Common/TweetBody";
+import TweetMetrics from "../Common/TweetMetrics";
 
 const Tweet = ({ tweets, tweet, user, users, rootTweet, bgBool }) => {
   const memoUser = useMemo(() => user, [user]);
@@ -9,12 +9,12 @@ const Tweet = ({ tweets, tweet, user, users, rootTweet, bgBool }) => {
 
   return (
     <div
-      className={`px-2 pt-2 rounded ml-1  border-l-2 border-t-2 w-full border-opacity-5 border-gray-500 dark:text-gray-100 ${
+      className={`px-2 pt-2 rounded ml-1 border-2 w-full mb-2 border-opacity-5 border-gray-500 dark:text-gray-100 ${
         tweet.id === rootTweet.id ? "border-2 " : ""
       } ${
         bgBool
-          ? "bg-gray-200 dark:bg-slate-800"
-          : "bg-gray-100 dark:bg-slate-900"
+          ? "bg-gray-200 dark:bg-black dark:border-slate-600 border-gray-500"
+          : "bg-gray-100 dark:bg-slate-900 dark:border-slate-700 border-gray-500"
       }`}
     >
       <UserInfo user={memoUser} tweet={tweet} />

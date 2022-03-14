@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { apiUrl } from "../config/api";
+import { apiUrl } from "../../config/api";
 import axios from "axios";
 import Thread from "./Thread";
-import Loading from "./Loading";
+import Loading from "../Common/Loading";
 import SortMenu from "./SortMenu";
 import ReactGA from "react-ga";
-import NotFound from "./NotFound";
+import NotFound from "../Common/NotFound";
 
 const ThreadPage = () => {
   const [loading, setLoading] = useState(true);
@@ -187,7 +187,7 @@ const ThreadPage = () => {
       {loading ? (
         <Loading />
       ) : Object.keys(thread).length > 0 ? (
-        <div className="flex flex-col lg:mx-[24vw] mx-[4vw] pt-10 pb-10">
+        <div className="flex flex-col lg:mx-[8vw] mx-[4vw] pt-10 pb-10">
           <SortMenu sortReplies={sortReplies} />
           <Thread tweets={thread} rootTweet={rootTweet} users={users} />
         </div>
