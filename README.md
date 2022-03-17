@@ -1,5 +1,5 @@
-# twit-threads
+# twitreader
 
-Read Twitter threads in Reddit-style
+Read Twitter conversations more easily
 
-[Try it here](https://twit-threads.vercel.app)
+[Try it here](https://twitreader.vercel.app)
